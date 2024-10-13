@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Order Tracking</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+      body {
+        background-color: #f8f9fa;
+      }
+      section {
+        display: flex;
+        position: fixed;
+        left: 0;
+        height: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+      }
+      .search-box {
+        margin-top: 30px;
+      }
+      .order-list {
+        margin-top: 20px;
+      }
+      .no-result {
+        display: none;
+      }
+      .address-list {
+        list-style-type: none;
+        padding-left: 0;
+      }
+      .item-img {
+        width: 88px;
+        height: 88px;
+        object-fit: cover;
+        margin-right: 15px;
+      }
+      .item-details {
+        display: flex;
+        align-items: center;
+      }
+      .status-indicator {
+        margin-left: auto;
+        font-weight: bold;
+      }
+      .correct {
+        color: green;
+      }
+      .wrong {
+        color: red;
+      }
+      .pending {
+        color: orange;
+      }
+      .navigation {
+        background: #bce0de;
+      }
+      .body-content {
+        overflow: auto;
+      }
+      img {
+        width: 100%;
+      }
+      .mt-2 {
+        line-height: 16px !important;
+        margin: 4px 0 !important;
+      }
+      #shipmentAddresses li {
+        margin-bottom: 10px;
+      }
+      #orderList {
+        margin-bottom: 25px;
+      }
+      #orderList li {
+        margin: 0 0 5px;
+        border-radius: 5px;
+      }
+
+      .receiver {
+        line-height: 16px !important;
+        margin: 10px 0px 15px;
+      }
+      .navigation div {
+        padding: 10px;
+      }
+
+      .navigation .active {
+        background: rgb(28, 28, 39);
+        color: #fff;
+      }
+    </style>
+  </head>
+  <body>
+    <section>
+      <div class="col-2 navigation">
+        <img src="ZYLIX.png" alt="" srcset="" />
+        <div>Dashboard</div>
+        <div>Messages</div>
+        <div class="active">Order Tracking</div>
+        <div>Products</div>
+        <div>Discounts</div>
+        <div>Costumners</div>
+        <div>Sign out</div>
+      </div>
+
+      <div class="col-10 body-content">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-12">
+              <h1 class="text-center mt-4">Order Tracking</h1>
+              <p class="text-center">
+                Search the orders by product number to track the status
+              </p>
+
+              <div class="search-box d-flex justify-content-center mt-4">
+                <input
+                  type="text"
+                  id="search"
+                  class="form-control w-50"
+                  placeholder="Enter Product Number to Search..."
+                />
+              </div>
+
+              <div class="order-list">
+                <ul class="list-group" id="orderList">
+                  <li
+                    class="list-group-item"
+                    data-id="013946YQA"
+                    data-product="Red Shirt, Size L"
+                    data-contact="Jane Smith"
+                    data-address="456 Park Ave, New York, NY"
+                    data-status="Wrong Item Sent"
+                    data-img="https://via.placeholder.com/80?text=Red+Shirt"
+                  >
+                    Order ID: 013946YQA
+                  </li>
+                  <li
+                    class="list-group-item"
+                    data-id="013947BXR"
+                    data-product="Yellow Shirt, Size S"
+                    data-contact="Alice Johnson"
+                    data-address="789 Oak St, Toronto, ON; 321 Elm St, Vancouver, BC"
+                    data-status="Pending"
+                    data-img="https://via.placeholder.com/80?text=Yellow+Shirt"
+                  >
+                    Order ID: 013947BXR
+                  </li>
+                  <li
+                    class="list-group-item"
+                    data-id="013948ZSY"
+                    data-product="Green Shirt, Size XL"
+                    data-contact="Michael Brown"
+                    data-address="101 Maple St, Chicago, IL"
+                    data-status="Correct Item Sent"
+                    data-img="https://via.placeholder.com/80?text=Green+Shirt"
+                  >
+                    Order ID: 013948ZSY
+                  </li>
+                  <li
+                    class="list-group-item"
+                    data-id="013949PWO"
+                    data-product="Purple Shirt, Size M"
+                    data-contact="Jessica Davis"
+                    data-address="202 Birch St, Miami, FL; 789 Cedar St, Orlando, FL"
+                    data-status="Wrong Item Sent"
+                    data-img="https://via.placeholder.com/80?text=Purple+Shirt"
+                  >
+                    Order ID: 013949PWO
+                  </li>
+                  <li
+                    class="list-group-item"
+                    data-id="013950KDT"
+                    data-product="Orange Shirt, Size L"
+                    data-contact="Christopher Garcia"
+                    data-address="303 Elm St, Seattle, WA"
+                    data-status="Pending"
+                    data-img="https://via.placeholder.com/80?text=Orange+Shirt"
+                  >
+                    Order ID: 013950KDT
+                  </li>
+                  <li
+                    class="list-group-item"
+                    data-id="013951TUX"
+                    data-product="Pink Shirt, Size S"
+                    data-contact="Sarah Wilson"
+                    data-address="404 Cedar St, San Francisco, CA"
+                    data-status="Correct Item Sent"
+                    data-img="https://via.placeholder.com/80?text=Pink+Shirt"
+                  >
+                    Order ID: 013951TUX
+                  </li>
+                  <li
+                    class="list-group-item"
+                    data-id="013952MJE"
+                    data-product="Teal Shirt, Size XL"
+                    data-contact="Daniel Martinez"
+                    data-address="505 Fir St, Dallas, TX"
+                    data-status="Wrong Item Sent"
+                    data-img="https://via.placeholder.com/80?text=Teal+Shirt"
+                  >
+                    Order ID: 013952MJE
+                  </li>
+                  <li
+                    class="list-group-item"
+                    data-id="013953VQN"
+                    data-product="Brown Shirt, Size M"
+                    data-contact="Laura Rodriguez"
+                    data-address="606 Spruce St, Boston, MA; 707 Ash St, Boston, MA"
+                    data-status="Pending"
+                    data-img="https://via.placeholder.com/80?text=Brown+Shirt"
+                  >
+                    Order ID: 013953VQN
+                  </li>
+                  <li
+                    class="list-group-item"
+                    data-id="013954UWL"
+                    data-product="Gray Shirt, Size L"
+                    data-contact="James Lee"
+                    data-address="707 Palm St, Atlanta, GA"
+                    data-status="Correct Item Sent"
+                    data-img="https://via.placeholder.com/80?text=Gray+Shirt"
+                  >
+                    Order ID: 013954UWL
+                  </li>
+                  <li
+                    class="list-group-item"
+                    data-id="013955CQP"
+                    data-product="Navy Shirt, Size S"
+                    data-contact="Emily Gonzalez"
+                    data-address="808 Oak St, Phoenix, AZ"
+                    data-status="Wrong Item Sent"
+                    data-img="https://via.placeholder.com/80?text=Navy+Shirt"
+                  >
+                    Order ID: 013955CQP
+                  </li>
+                  <li
+                    class="list-group-item"
+                    data-id="013956DZR"
+                    data-product="Magenta Shirt, Size XL"
+                    data-contact="David Harris"
+                    data-address="909 Birch St, Orlando, FL"
+                    data-status="Pending"
+                    data-img="https://via.placeholder.com/80?text=Magenta+Shirt"
+                  >
+                    Order ID: 013956DZR
+                  </li>
+                  <li
+                    class="list-group-item"
+                    data-id="013957JHW"
+                    data-product="Lime Shirt, Size M"
+                    data-contact="Samantha Clark"
+                    data-address="100 Maple St, Denver, CO; 200 Oak St, Denver, CO"
+                    data-status="Correct Item Sent"
+                    data-img="https://via.placeholder.com/80?text=Lime+Shirt"
+                  >
+                    Order ID: 013957JHW
+                  </li>
+
+                  <li
+                    class="list-group-item"
+                    data-id="013945XQZ"
+                    data-product=""
+                    data-contact="John Doe"
+                    data-address="123 Main St, New York, NY"
+                    data-status="Correct Item Sent"
+                    data-img="https://via.placeholder.com/80?text=Blue+Shirt"
+                  >
+                    Order ID: 013945XQZ
+                  </li>
+                  <li
+                    class="list-group-item"
+                    data-id="013958BYU"
+                    data-product="Coral Shirt, Size L"
+                    data-contact="Anthony Lewis"
+                    data-address="200 Pine St, San Diego, CA"
+                    data-status="Wrong Item Sent"
+                    data-img="https://via.placeholder.com/80?text=Coral+Shirt"
+                  >
+                    Order ID: 013958BYU
+                  </li>
+                  <li
+                    class="list-group-item"
+                    data-id="013959FPL"
+                    data-product="Cyan Shirt, Size S"
+                    data-contact="Sophia Walker"
+                    data-address="300 Oak St, Portland, OR"
+                    data-status="Pending"
+                    data-img="https://via.placeholder.com/80?text=Cyan+Shirt"
+                  >
+                    Order ID: 013959FPL
+                  </li>
+                  <li
+                    class="list-group-item"
+                    data-id="013960HKR"
+                    data-product="Olive Shirt, Size XL"
+                    data-contact="Daniel Hall"
+                    data-address="400 Willow St, Sacramento, CA"
+                    data-status="Correct Item Sent"
+                    data-img="https://via.placeholder.com/80?text=Olive+Shirt"
+                  >
+                    Order ID: 013960HKR
+                  </li>
+                  <li
+                    class="list-group-item"
+                    data-id="013961MSJ"
+                    data-product="Mint Shirt, Size M"
+                    data-contact="Olivia Young"
+                    data-address="500 Cherry St, Indianapolis, IN"
+                    data-status="Wrong Item Sent"
+                    data-img="https://via.placeholder.com/80?text=Mint+Shirt"
+                  >
+                    Order ID: 013961MSJ
+                  </li>
+                  <li
+                    class="list-group-item"
+                    data-id="013962QAW"
+                    data-product="Ivory Shirt, Size L"
+                    data-contact="Jacob King"
+                    data-address="600 Maple St, Columbus, OH; 800 Elm St, Columbus, OH"
+                    data-status="Pending"
+                    data-img="https://via.placeholder.com/80?text=Ivory+Shirt"
+                  >
+                    Order ID: 013962QAW
+                  </li>
+                  <li
+                    class="list-group-item"
+                    data-id="013963HXR"
+                    data-product="Salmon Shirt, Size S"
+                    data-contact="Mia Wright"
+                    data-address="700 Birch St, Austin, TX"
+                    data-status="Correct Item Sent"
+                    data-img="https://via.placeholder.com/80?text=Salmon+Shirt"
+                  >
+                    Order ID: 013963HXR
+                  </li>
+                  <li
+                    class="list-group-item"
+                    data-id="013964TBR"
+                    data-product="Lavender Shirt, Size XL"
+                    data-contact="Benjamin Scott"
+                    data-address="800 Oak St, Jacksonville, FL; 600 Pine St, Jacksonville, FL"
+                    data-status="Wrong Item Sent"
+                    data-img="https://via.placeholder.com/80?text=Lavender+Shirt"
+                  >
+                    Order ID: 013964TBR
+                  </li>
+                  <li
+                    class="list-group-item"
+                    data-id="013965QPY"
+                    data-product="Burgundy Shirt, Size M"
+                    data-contact="Charlotte Hill"
+                    data-address="900 Pine St, San Antonio, TX"
+                    data-status="Pending"
+                    data-img="https://via.placeholder.com/80?text=Burgundy+Shirt"
+                  >
+                    Order ID: 013965QPY
+                  </li>
+                  <li
+                    class="list-group-item"
+                    data-id="013966JRL"
+                    data-product="Chestnut Shirt, Size L"
+                    data-contact="Noah Green"
+                    data-address="100 Cedar St, Kansas City, MO"
+                    data-status="Correct Item Sent"
+                    data-img="https://via.placeholder.com/80?text=Chestnut+Shirt"
+                  >
+                    Order ID: 013966JRL
+                  </li>
+                  <li
+                    class="list-group-item"
+                    data-id="013967XNF"
+                    data-product="Gold Shirt, Size S"
+                    data-contact="Liam Adams"
+                    data-address="200 Elm St, Raleigh, NC"
+                    data-status="Wrong Item Sent"
+                    data-img="https://via.placeholder.com/80?text=Gold+Shirt"
+                  >
+                    Order ID: 013967XNF
+                  </li>
+                  <li
+                    class="list-group-item"
+                    data-id="013968HGV"
+                    data-product="Silver Shirt, Size XL"
+                    data-contact="Emma Mitchell"
+                    data-address="300 Oak St, Omaha, NE"
+                    data-status="Pending"
+                    data-img="https://via.placeholder.com/80?text=Silver+Shirt"
+                  >
+                    Order ID: 013968HGV
+                  </li>
+                </ul>
+                <div class="no-result text-center text-danger mt-3">
+                  No matching order found
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <script>
+        $(document).ready(function () {
+          $("#search").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            var found = false;
+
+            $("#orderList li").filter(function () {
+              $(this).toggle(
+                $(this).attr("data-id").toLowerCase().indexOf(value) > -1
+              );
+
+              if ($(this).is(":visible")) {
+                found = true;
+              }
+            });
+
+            if (found) {
+              $(".no-result").hide();
+            } else {
+              $(".no-result").show();
+            }
+          });
+
+          $("#orderList li").on("click", function () {
+            var orderId = $(this).data("id");
+            var productName = $(this).data("product");
+
+            $("#modalOrderTitle").text(
+              "Order #" + orderId + "  " + productName
+            );
+            $("#originalOrder").text(productName);
+
+            $("#shipmentModal").modal("show");
+          });
+        });
+      </script>
+    </section>
+
+    <div
+      class="modal fade"
+      id="shipmentModal"
+      tabindex="-1"
+      aria-labelledby="shipmentModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="shipmentModalLabel">
+              Shipment Details
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <h5 id="modalOrderTitle"></h5>
+            <p class="receiver">
+              <strong>ORDER DETAILS</strong><br />
+              <strong>Contact Name:</strong> Jinji Martinez<br />
+              <strong>Contact Number:</strong> 604-555-1234<br />
+              <strong>Address:</strong> Barrio Rosario Delvalle, 1, Linares, Can
+              84794<br />
+            </p>
+            <hr />
+            <ul class="address-list" id="shipmentAddresses">
+              <!-- Static shipment details -->
+              <div class="receiver">
+                <strong>SHIPMENT ADDRESS 1</strong><br />
+                <strong>Contact Name:</strong> Xander Martinez<br />
+                <strong>Contact Number:</strong> 613-731-7618<br />
+                <strong>Address:</strong> Apt. 149 152 Conrad Ridge, Barryshire,
+                AR 69733<br />
+              </div>
+              <li class="item-details d-flex align-items-start">
+                <img
+                  src="https://www.theodoreherald.com/cdn/shop/products/poloshirtzip-neck-recycledririzipper-pimacotton-knitwear-mensclothing-madeinperu-darknavy-2_1200x1800.jpg?v=1667085980"
+                  alt="Blue Shirt"
+                  class="item-img me-3"
+                />
+                <div>
+                  <div class="mt-2">
+                    <strong>Item:</strong> Pima Cotton Polo Shirt (Zip-neck)<br />
+                    <strong>Color:</strong> Large<br />
+                    <strong>Size:</strong> Navy<br />
+                    <strong>Quantity:</strong> 1<br />
+                    <strong>Price: </strong> ₱ 8,591.79
+                  </div>
+                </div>
+              </li>
+
+              <hr />
+              <div class="receiver">
+                <strong>SHIPMENT ADDRESS 2</strong><br />
+                <strong>Contact Name:</strong> Zane Martinez<br />
+                <strong>Contact Number:</strong> 925-374-8663<br />
+                <strong>Address:</strong> 6417 Caroyln Land, Port Lessieshire,
+                GA 74589-6432
+              </div>
+
+              <li class="item-details d-flex align-items-start">
+                <img
+                  src="https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQQERExNwapsv0fAwvyMwvySVtaw9OQlqJr480t9zM7pSvlYhOUbmpXtMoAAeuJlQ6X3QMdgXSnDZAk-Hvp4j2wPO_M5XEUSKK13FWnzfKDfYK8CnAsPQxA&usqp=CAE"
+                  alt="Pink Shirt"
+                  class="item-img me-3"
+                />
+                <div>
+                  <div class="mt-2">
+                    <strong>Item:</strong>
+                    Canali Cutaway-Collar Textured-Cotton Shirt Men Pink<br />
+                    <strong>Color:</strong> Medium<br />
+                    <strong>Size:</strong> Pink<br />
+                    <strong>Quantity:</strong> 1<br />
+                    <strong>Price: </strong> ₱ 10,552.50
+                  </div>
+                </div>
+              </li>
+
+              <hr />
+              <div class="receiver">
+                <strong>SHIPMENT ADDRESS 3</strong><br />
+                <strong>Contact Name:</strong> Zachary Martinez<br />
+                <strong>Contact Number:</strong> 925-972-8462<br />
+                <strong>Address:</strong> Suite 514 9741 Melany Islands,
+                Shanahanborough, NY 51844-8965
+              </div>
+
+              <li class="item-details d-flex align-items-start">
+                <img
+                  src="https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTWiS9gfrCrLxHUATZOYwVn9xcW9IySRobonnMGMfF175JBbJhGBspK1uEHdWXOTtA3Jpq61ogf0gee6_DeAOFZUgjIct4a6uZaY2GSRFMfICqIGDItsTIUdQ&usqp=CAE"
+                  alt="Green Shirt"
+                  class="item-img me-3"
+                />
+                <div>
+                  <div class="mt-2">
+                    <strong>Item:</strong>
+                    Represent Owner's Club T-Shirt Racing Green<br />
+                    <strong>Color:</strong> Small<br />
+                    <strong>Size:</strong> Green<br />
+                    <strong>Quantity:</strong> 1<br />
+                    <strong>Price: </strong> ₱ 8,000.75
+                  </div>
+                </div>
+              </li>
+            </ul>
+
+            <h3>
+              <strong><b>TOTAL PAYMENT: </b></strong>27,145.01
+            </h3>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
